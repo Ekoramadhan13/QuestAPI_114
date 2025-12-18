@@ -1,6 +1,5 @@
 package com.example.tugas9.viewmodel.provider
 
-
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -10,20 +9,24 @@ import com.example.tugas9.repositori.AplikasiDataSiswa
 import com.example.tugas9.viewmodel.EntryViewModel
 import com.example.tugas9.viewmodel.HomeViewModel
 
-fun CreationExtras.aplikasiDataSiswa():AplikasiDataSiswa = (
-        this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as
-                AplikasiDataSiswa
-        )
+fun CreationExtras.aplikasiDataSiswa(): AplikasiDataSiswa =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as
+            AplikasiDataSiswa
+            )
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
         initializer {
-            HomeViewModel(aplikasiDataSiswa().container
-                .repositoryDataSiswa)
+            HomeViewModel(
+                aplikasiDataSiswa().container
+                    .repositoryDataSiswa
+            )
         }
         initializer {
-            EntryViewModel(aplikasiDataSiswa().container
-                .repositoryDataSiswa)
+            EntryViewModel(
+                aplikasiDataSiswa().container
+                    .repositoryDataSiswa
+            )
         }
     }
 }
