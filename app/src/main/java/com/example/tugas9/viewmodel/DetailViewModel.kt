@@ -1,9 +1,6 @@
-package com.example.tugas9.viewmodel
-
-import android.net.http.HttpException
-
 @file:OptIn(InternalSerializationApi::class)
 
+package com.example.tugas9.viewmodel
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
@@ -20,6 +17,7 @@ import kotlinx.serialization.InternalSerializationApi
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+
 
 sealed interface StatusUIDetail {
     data class Success(val satusiswa: DataSiswa) : StatusUIDetail
