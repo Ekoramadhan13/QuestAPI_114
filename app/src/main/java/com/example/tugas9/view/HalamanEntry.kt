@@ -22,8 +22,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tugas9.R
 import com.example.tugas9.modeldata.DetailSiswa
+import com.example.tugas9.modeldata.UIStateSiswa
 import com.example.tugas9.uicontroller.route.DestinasiEntry
 import com.example.tugas9.viewmodel.EntryViewModel
 import com.example.tugas9.viewmodel.provider.PenyediaViewModel
@@ -70,7 +72,7 @@ fun EntrySiswaScreen(
 
 @Composable
 fun EntrySiswaBody(
-    uiStateSiswa: UiStateSiswa,
+    uiStateSiswa: UIStateSiswa,
     onSiswaValueChange: (DetailSiswa) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
