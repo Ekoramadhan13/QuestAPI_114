@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+    implementation(libs.androidx.navigation.runtime.ktx)
     //
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
