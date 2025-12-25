@@ -1,5 +1,6 @@
 package com.example.tugas9.modeldata
 
+
 import com.example.tugas9.modeldata.DetailSiswa
 import kotlinx.serialization.Serializable
 import kotlin.Int
