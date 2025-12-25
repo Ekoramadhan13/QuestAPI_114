@@ -26,13 +26,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import com.example.tugas9.R
+import com.example.tugas9.modeldata.DataSiswa
 import com.example.tugas9.uicontroller.route.DestinasiDetail
 import com.example.tugas9.viewmodel.DetailViewModel
+import com.example.tugas9.viewmodel.StatusUIDetail
+import com.example.tugas9.viewmodel.StatusUiSiswa
 import com.example.tugas9.viewmodel.provider.PenyediaViewModel
 import kotlinx.coroutines.launch
 
@@ -53,12 +60,12 @@ fun DetailSiswaScreen(
             )
         },
         floatingActionButton = {
-            val uiState = viewModel.statusUiDetail
+            val uiState = viewModel.statusUIDetail
             FloatingActionButton(
                 onClick = {
                     when (uiState) {
-                        is StatusUiDetail.Success ->
-                            navigateToEditItem(uiState.status.id)
+                        is StatusUIDetail.Success ->
+                            navigateToEditItem(uiState.satusiswa.id)
                         else -> {}
                     }
                 },
@@ -67,7 +74,7 @@ fun DetailSiswaScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.update)
+                    contentDescription = stringResource(R.string.update),
                 )
             }
         },
@@ -75,7 +82,7 @@ fun DetailSiswaScreen(
     ) { innerPadding ->
         val coroutineScope = rememberCoroutineScope()
         BodyDetailDataSiswa(
-            statusUiDetail = viewModel.statusUiDetail,
+            statusUIDetail = viewModel.statusUIDetail,
             onDelete = {
                 coroutineScope.launch {
                     viewModel.hapusSatuSiswa()
@@ -91,7 +98,7 @@ fun DetailSiswaScreen(
 
 @Composable
 private fun BodyDetailDataSiswa(
-    statusUiDetail: StatusUiDetail,
+    statusUIDetail: StatusUIDetail,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -100,17 +107,12 @@ private fun BodyDetailDataSiswa(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-
-        when (statusUiDetail) {
-            is StatusUiDetail.Success -> {
-                DetailDataSiswa(
-                    siswa = statusUiDetail.siswa,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+        when(statusUIDetail){
+            is StatusUIDetail.Success -> DetailDataSiswa(
+                siswa = statusUIDetail.satusiswa,
+                modifier = Modifier.fillMaxWidth())
             else -> {}
         }
-
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -118,7 +120,6 @@ private fun BodyDetailDataSiswa(
         ) {
             Text(stringResource(R.string.delete))
         }
-
         if (deleteConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -134,12 +135,10 @@ private fun BodyDetailDataSiswa(
 
 @Composable
 fun DetailDataSiswa(
-    siswa: Siswa,
-    modifier: Modifier = Modifier
+    siswa: DataSiswa, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
+        modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -151,24 +150,33 @@ fun DetailDataSiswa(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             BarisDetailData(
-                labelResID = R.string.nama,
+                labelResID = R.string.nama1,
                 itemDetail = siswa.nama,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
                 )
             )
             BarisDetailData(
-                labelResID = R.string.alamat,
+                labelResID = R.string.alamat1,
                 itemDetail = siswa.alamat,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
                 )
             )
             BarisDetailData(
-                labelResID = R.string.telpon,
+                labelResID = R.string.telpon1,
                 itemDetail = siswa.telpon,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
                 )
             )
         }
@@ -177,9 +185,7 @@ fun DetailDataSiswa(
 
 @Composable
 private fun BarisDetailData(
-    @StringRes labelResID: Int,
-    itemDetail: String,
-    modifier: Modifier = Modifier
+    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(stringResource(labelResID))
@@ -194,8 +200,7 @@ private fun DeleteConfirmationDialog(
     onDeleteCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AlertDialog(
-        onDismissRequest = {},
+    AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text(stringResource(R.string.attention)) },
         text = { Text(stringResource(R.string.tanya)) },
         modifier = modifier,
